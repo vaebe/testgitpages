@@ -1,0 +1,71 @@
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>ccui demo</title>
+</head>
+<body>
+<div id="app">
+
+  <button @click="toggleDark">{{ isDark ? '深夜' : '黎明' }}</button>
+  <c-card style="width: 400px;" header="这是标题">
+    我们终将远行，和过去稚嫩的自己告别。这是一个流行告别的时代，陪你颠沛流离的人越来越少，直至没有。
+    我们也要习惯昔日好友的渐行渐远，因为我们终将长大，长大到可以独自一人抵挡风雨。
+  </c-card>
+</div>
+<script>
+
+  let head = document.getElementsByTagName('head')[0]
+
+  let vueJs = document.createElement('script')
+  vueJs.src = 'https://unpkg.com/vue@next'
+  vueJs.type = 'text/javascript'
+  head.appendChild(vueJs)
+
+  let uiStyle = document.createElement('link')
+  uiStyle.href = 'https://unpkg.com/vue3-ccui/style.css'
+  uiStyle.rel = 'stylesheet'
+  head.appendChild(uiStyle)
+
+  let uiDarkStyle = document.createElement('link')
+  uiDarkStyle.href = './build/theme/darkTheme.css'
+  uiDarkStyle.rel = 'stylesheet'
+  head.appendChild(uiDarkStyle)
+
+  let ccuiJs = document.createElement('script')
+  ccuiJs.src = 'https://unpkg.com/vue3-ccui'
+  ccuiJs.type = 'text/javascript'
+  head.appendChild(ccuiJs)
+
+
+  window.onload = function () {
+    const App = {
+      data() {
+        return {
+          isDark: false,
+        };
+      },
+      created() {
+        this.isDark = localStorage.getItem('vue3-ccui-isDark') || false
+        this.toggleDark()
+      },
+      methods: {
+        toggleDark() {
+          this.isDark = !this.isDark
+          localStorage.setItem('vue3-ccui-isDark', this.isDark)
+          const bodyDom = document.body
+          if (this.isDark) {
+            bodyDom.className = 'dark'
+          } else {
+            bodyDom.className = ''
+          }
+        },
+      }
+    };
+    const app = Vue.createApp(App);
+    app.use(VueCcui.default);
+    app.mount("#app");
+  }
+</script>
+</body>
+</html>
